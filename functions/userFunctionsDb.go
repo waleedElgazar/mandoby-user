@@ -141,3 +141,9 @@ func CreateToken(w http.ResponseWriter, r *http.Request, phone string) string {
 	return tokenString
 
 }
+
+func GetPort() string{
+	dbb := db.DBConn()
+	defer dbb.Close()
+	return os.Getenv("PORT")
+}
