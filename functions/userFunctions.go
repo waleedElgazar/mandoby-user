@@ -115,3 +115,8 @@ func DelteUser(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+
+func DisplayWelcome(w http.ResponseWriter, r *http.Request){
+	fmt.Fprint(w,"hello")
+}
