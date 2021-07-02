@@ -14,8 +14,8 @@ import (
 func InsertUserData(user db.User) bool {
 	db := db.DBConn()
 	defer db.Close()
-	db_name := os.Getenv("DB_NAME")
-	in := "INSERT INTO " + db_name + ".user SET phone =?, name=?, otp=?, token=?"
+	//db_name := os.Getenv("DB_NAME")
+	in := "INSERT INTO " + "user SET phone =?, name=?, otp=?, token=?"
 	insert, err := db.Prepare(in)
 	if err != nil {
 		panic(err.Error())
@@ -32,8 +32,8 @@ func GetUserDb(phone string) (db.User, bool) {
 	var users db.User
 	dbb := db.DBConn()
 	defer dbb.Close()
-	db_name := os.Getenv("DB_NAME")
-	query := "SELECT id,phone,name, otp,token FROM " + db_name + ".user WHERE phone = ?"
+	//db_name := os.Getenv("DB_NAME")
+	query := "SELECT id,phone,name, otp,token FROM " + "user WHERE phone = ?"
 	err := dbb.QueryRow(query, phone).Scan(&users.Id, &users.Phone, &users.Name, &users.Otp, &users.Token)
 	if err != nil {
 		fmt.Println(err)
@@ -142,9 +142,7 @@ func CreateToken(w http.ResponseWriter, r *http.Request, phone string) string {
 
 }
 
-
-
-func GetPort() string{
+func GetPort() string {
 	dbb := db.DBConn()
 	defer dbb.Close()
 	return os.Getenv("PORT")
