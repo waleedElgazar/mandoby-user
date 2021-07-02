@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 //done
@@ -35,18 +37,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 //done
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var user db.User
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		w.Header().Set("Content-Type", "text/plain")
-		fmt.Println(err.Error())
-		w.Write([]byte("there is error happened\n try again"))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	userPhone := user.Phone
-	fmt.Println(userPhone, "fd")
-	user, founded := GetUserDb(userPhone)
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	//userPhone := user.Phone
+	fmt.Println(params["phone"], "fd")
+	user, founded := GetUserDb(params["phone"])
 	if founded {
 		w.Header().Set("Content-Type", "text/plain")
 		w.Write([]byte("founded user like that "))
@@ -116,7 +111,6 @@ func DelteUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-func DisplayWelcome(w http.ResponseWriter, r *http.Request){
-	fmt.Fprint(w,"hello")
+func DisplayWelcome(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "hello")
 }
