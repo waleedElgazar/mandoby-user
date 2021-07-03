@@ -40,7 +40,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	//userPhone := user.Phone
-	fmt.Println(params["phone"], "fd")
 	user, founded := GetUserDb(params["phone"])
 	if founded {
 		w.Header().Set("Content-Type", "text/plain")

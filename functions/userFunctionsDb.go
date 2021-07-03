@@ -18,6 +18,8 @@ func InsertUserData(user db.User) bool {
 	in := "INSERT INTO " + "user SET phone =?, name=?, otp=?, token=?"
 	insert, err := db.Prepare(in)
 	if err != nil {
+		fmt.Println("error start from here ", err.Error())
+		fmt.Println("ends")
 		panic(err.Error())
 	}
 	_, err = insert.Exec(user.Phone, user.Name, user.Otp, user.Token)
