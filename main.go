@@ -3,12 +3,22 @@ package main
 import (
 	"demo/functions"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
 
 func main() {
-	port := functions.GetPort()
+
+	os.Setenv("DB_HOST", "us-cdbr-east-04.cleardb.com")
+	os.Setenv("DB_PORT", "(us-cdbr-east-04.cleardb.com)")
+	os.Setenv("DB_DRIVER", "mysql")
+	os.Setenv("DB_ROOT", "ba9602972fccac")
+	os.Setenv("DB_PASSWORD", "15fb18e3")
+	os.Setenv("DB_NAME", "heroku_3478a5eb4b093f3")
+	os.Setenv("PORT", "8082")
+
+	port := os.Getenv("PORT")
 	router := mux.NewRouter()
 	router.HandleFunc("/", functions.DisplayWelcome)
 	router.HandleFunc("/addUser", functions.AddUser).Methods("POST")
