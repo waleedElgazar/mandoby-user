@@ -18,7 +18,6 @@ func main() {
 	os.Setenv("DB_NAME", "heroku_3478a5eb4b093f3")
 	os.Setenv("PORT", "8082")
 
-	port := os.Getenv("PORT")
 	router := mux.NewRouter()
 	router.HandleFunc("/", functions.DisplayWelcome)
 	router.HandleFunc("/addUser", functions.AddUser).Methods("POST")
@@ -26,6 +25,6 @@ func main() {
 	router.HandleFunc("/deleteUser", functions.DelteUser).Methods("DELETE")
 	router.HandleFunc("/updateUser", functions.UpdateUSer).Methods("PUT")
 	router.HandleFunc("/getAllUsers", functions.GetUsers).Methods("GET")
-	http.ListenAndServe(":"+port, router)
+	http.ListenAndServe(":8082", router)
 
 }
