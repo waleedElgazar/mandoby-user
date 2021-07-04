@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	os.Setenv("DB_HOST", "us-cdbr-east-04.cleardb.com")
 	os.Setenv("DB_PORT", "(us-cdbr-east-04.cleardb.com)")
 	os.Setenv("DB_DRIVER", "mysql")
@@ -23,7 +22,7 @@ func main() {
 	router.HandleFunc("/", functions.DisplayWelcome)
 	router.HandleFunc("/addUser", functions.AddUser).Methods("POST")
 	router.HandleFunc("/getUser/{phone}", functions.GetUser).Methods("GET")
-	router.HandleFunc("/deleteUser", functions.DelteUser).Methods("DELETE")
+	router.HandleFunc("/deleteUser/{phone}", functions.DelteUser).Methods("DELETE")
 	router.HandleFunc("/updateUser", functions.UpdateUSer).Methods("PUT")
 	router.HandleFunc("/getAllUsers", functions.GetUsers).Methods("GET")
 	http.ListenAndServe(":"+port, router)

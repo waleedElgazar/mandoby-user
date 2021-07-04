@@ -97,17 +97,13 @@ func UpdateUSer(w http.ResponseWriter, r *http.Request) {
 
 //done
 func DelteUser(w http.ResponseWriter, r *http.Request) {
-	var user db.User
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		fmt.Println(err.Error())
-		w.WriteHeader(http.StatusBadRequest)
-	} else {
-		deleted := DeleteUserDb(user.Phone)
-		if deleted {
-			w.WriteHeader(http.StatusAccepted)
-		}
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	deleted := DeleteUserDb(params["phone"])
+	if deleted {
+		w.WriteHeader(http.StatusAccepted)
 	}
+
 }
 
 func DisplayWelcome(w http.ResponseWriter, r *http.Request) {
