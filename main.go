@@ -15,7 +15,7 @@ func main() {
 	os.Setenv("DB_ROOT", "ba9602972fccac")
 	os.Setenv("DB_PASSWORD", "15fb18e3")
 	os.Setenv("DB_NAME", "heroku_3478a5eb4b093f3")
-	os.Setenv("PORT", "8083")
+	//os.Setenv("PORT", "8083")
 	port := os.Getenv("PORT")
 
 	router := mux.NewRouter()
