@@ -14,9 +14,6 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	var creds db.User
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("failed"))
-		w.Write([]byte(err.Error()))
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	} else {
@@ -28,8 +25,6 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 			Token: token,
 		}
 		InsertUserData(user)
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("added succ"))
 		w.WriteHeader(http.StatusAccepted)
 		return
 	}
@@ -42,15 +37,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	//userPhone := user.Phone
 	user, founded := GetUserDb(params["phone"])
 	if founded {
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("founded user like that "))
 		json.NewEncoder(w).Encode(&user)
 		w.WriteHeader(http.StatusAccepted)
 		return
 	} else {
 		json.NewEncoder(w).Encode(&user)
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("there is no user with that type"))
 		w.WriteHeader(http.StatusAccepted)
 		return
 	}
@@ -61,15 +52,11 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	//var user db.User
 	user, founded := GetAllUsersDb()
 	if founded {
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("founded user like that "))
 		json.NewEncoder(w).Encode(&user)
 		w.WriteHeader(http.StatusAccepted)
 		return
 	} else {
 		json.NewEncoder(w).Encode(&user)
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("there is no user with that type"))
 		w.WriteHeader(http.StatusAccepted)
 		return
 	}
