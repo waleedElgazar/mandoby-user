@@ -30,6 +30,30 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func AddRate(w http.ResponseWriter, r *http.Request) {
+	var rate db.Rating
+	err := json.NewDecoder(r.Body).Decode(&rate)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	} else {
+		rate :=db.Rating{
+			Rate: rate.Rate,
+			Phone: rate.Phone,
+		}
+		InsertUserRate(rate)
+		w.WriteHeader(http.StatusAccepted)
+		return
+	}
+}
+
+func GetRate(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	rate := GetUserRate(params["phone"])
+	json.NewEncoder(w).Encode(rate)
+}
+
 //done
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

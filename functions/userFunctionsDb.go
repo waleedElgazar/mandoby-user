@@ -28,6 +28,40 @@ func InsertUserData(user db.User) bool {
 	}
 	return true
 }
+func InsertUserRate(rate db.Rating) bool {
+	db := db.DBConn()
+	defer db.Close()
+	//db_name := os.Getenv("DB_NAME")
+	in := "INSERT INTO "+"rating SET phone =?, rate=?"
+	insert, err := db.Prepare(in)
+	if err != nil {
+		fmt.Println("error start from here ", err.Error())
+		fmt.Println("ends")
+		panic(err.Error())
+	}
+	_, err = insert.Exec(rate.Phone,rate.Rate)
+	if err != nil {
+		panic(err.Error())
+	}
+	return true
+}
+
+func GetUserRate(phone string)float64{
+	db := db.DBConn()
+	defer db.Close()
+	query:="SELECT AVG(rate) FROM rating WHERE phone ="+phone
+	fmt.Println(query)
+	rows, err := db.Query(query)
+	if err != nil {
+		return 0
+	} else {
+		var avg_price float64
+		for rows.Next() {
+			rows.Scan(&avg_price)
+		}
+		return avg_price
+	}
+}
 
 //done
 func GetUserDb(phone string) (db.User, bool) {
