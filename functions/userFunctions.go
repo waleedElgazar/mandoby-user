@@ -72,22 +72,15 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetUserToCall(w http.ResponseWriter, r *http.Request,phone string ) {
+func GetUserToCall(w http.ResponseWriter, r *http.Request,phone string ) db.User{
 	w.Header().Set("Content-Type", "application/json")
-	user, founded := GetUserDb(phone)
-	if founded {
-		json.NewEncoder(w).Encode(&user)
-		w.WriteHeader(http.StatusAccepted)
-		return
-	} else {
-		json.NewEncoder(w).Encode(&user)
-		w.WriteHeader(http.StatusAccepted)
-		return
-	}
+	user, _ := GetUserDb(phone)
+	return user
 }
 var mySigningKey = []byte("mandopy-project")
 
 func IsAuthorized(w http.ResponseWriter, r *http.Request)  {
+	var user db.User
 	if r.Header["Token"] != nil {
 
 		token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
@@ -102,12 +95,13 @@ func IsAuthorized(w http.ResponseWriter, r *http.Request)  {
 		}
 		if token.Valid {
 			param := mux.Vars(r)
-			GetUserToCall(w,r,param["toCall"])
+			user =GetUserToCall(w,r,param["toCall"])
 		}
 	} else {
 		param := mux.Vars(r)
-		GetUserToCall(w,r,param["toCall"])
+		user=GetUserToCall(w,r,param["toCall"])
 	}
+	json.NewEncoder(w).Encode(user)
 }
 
 //done
