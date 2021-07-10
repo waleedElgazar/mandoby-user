@@ -28,6 +28,7 @@ func InsertUserData(user db.User) bool {
 	}
 	return true
 }
+
 func InsertUserRate(rate db.Rating) bool {
 	db := db.DBConn()
 	defer db.Close()
@@ -69,8 +70,8 @@ func GetUserDb(phone string) (db.User, bool) {
 	dbb := db.DBConn()
 	defer dbb.Close()
 //	db_name := os.Getenv("DB_NAME")
-	query := "SELECT id,phone,name, otp,token FROM "  + "user WHERE phone = ?"
-	err := dbb.QueryRow(query, phone).Scan(&users.Id, &users.Phone, &users.Name, &users.Otp, &users.Token)
+	query := "SELECT id,phone,name, otp,token,imageUrl FROM "  + "user WHERE phone = ?"
+	err := dbb.QueryRow(query, phone).Scan(&users.Id, &users.Phone, &users.Name, &users.Otp, &users.Token,&users.ImageUrl)
 	if err != nil {
 		fmt.Println(err)
 		return users, false
@@ -84,16 +85,16 @@ func GetAllUsersDb() ([]db.User, bool) {
 	dbb := db.DBConn()
 	defer dbb.Close()
 	db_name := os.Getenv("DB_NAME")
-	query := "SELECT id,phone,name, otp,token FROM " + db_name + ".user "
+	query := "SELECT id,phone,name, otp,token,imageUrl FROM " + db_name + ".user "
 	result, err := dbb.Query(query)
 	if err != nil {
 		fmt.Println(err)
 	}
 	var id int
-	var name, phone, otp, token string
+	var name, phone, otp, token,imageUrl string
 
 	for result.Next() {
-		err = result.Scan(&id, &phone, &name, &otp, &token)
+		err = result.Scan(&id, &phone, &name, &otp, &token,&imageUrl)
 		if err != nil {
 			fmt.Println("error ", err.Error())
 			return nil, false
@@ -104,6 +105,7 @@ func GetAllUsersDb() ([]db.User, bool) {
 			Phone: phone,
 			Otp:   otp,
 			Token: token,
+			ImageUrl: imageUrl,
 		}
 		users = append(users, user)
 	}
@@ -117,13 +119,13 @@ func UpdateUSerDb(phone string, user db.User) bool {
 	db := db.DBConn()
 	defer db.Close()
 	db_name := os.Getenv("DB_NAME")
-	query := "UPDATE " + db_name + ".user set name =? WHERE phone =?"
+	query := "UPDATE " + db_name + ".user set name =?, imageUrl= ? WHERE phone =?"
 	update, err := db.Prepare(query)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false
 	}
-	_, err = update.Exec(user.Name, phone)
+	_, err = update.Exec(user.Name,user.ImageUrl, phone)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false

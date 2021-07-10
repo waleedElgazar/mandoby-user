@@ -7,4 +7,5 @@ type User struct{
 	Name		string 		`json:"name"`
 	Otp			string		`json:"otp"`
 	Token		string		`json:"token"`
+	ImageUrl string		`json:"imageUrl"`
 }
