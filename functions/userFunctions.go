@@ -131,6 +131,7 @@ func UpdateUSer(w http.ResponseWriter, r *http.Request) {
 	} else {
 		user := db.User{
 			Name: userCred.Name,
+			ImageUrl: userCred.ImageUrl,
 		}
 		updated := UpdateUSerDb(userCred.Phone, user)
 		if updated {
